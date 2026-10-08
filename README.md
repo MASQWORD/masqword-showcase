@@ -17,7 +17,7 @@ MASQWORD is an independent game studio: **a Ukrainian team based in Austria**, f
 
 | Game | Status |
 | --- | --- |
-| **MASQWORD** | Playable as a Discord Activity. Pre-launch: finished feature set, playtested with friends, public launch and community-server rollout are next. We have no public player numbers to claim. |
+| **MASQWORD** | Playable as a Discord Activity. Pre-launch: the core game is complete and playtested with friends, public launch and community-server rollout are next. We have no public player numbers to claim. |
 | **Bunker** (working title) | In development. A social debate game: players argue over who earns a place in the bunker. For Discord, mobile and the web. |
 | *Untitled word game* | Coming soon. A word party game designed for Discord voice chat; our biggest game yet. |
 
