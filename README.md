@@ -34,6 +34,31 @@ One player gets a situation and **three secret words** and tells a story out lou
 
 Screenshots come from a dev fixture with fictional players (see [`examples/screenshot-pipeline.py`](examples/screenshot-pipeline.py)).
 
+## Cosmetics in motion
+
+Players can dress their seat with a headwear piece above the portrait and a frame around it. In the game these are **plain CSS and SVG** (keyframed transforms, masks, gradients, no canvas and no video), and the `FxGovernor` turns them down on weak devices and for reduced motion. The captures below come from the same dev fixture as the screenshots above (fictional players), recorded in Edge with Playwright. Each GIF frame is rendered with the page's animations paused and stepped to an exact time, so frames are clean.
+
+<p align="center"><img src="media/lobby-cosmetics.gif" alt="The lobby table with all eight seats dressed: crown, halos, glowing horns, shadow wings, neon ears and glowing frames, looping for four seconds" width="760"></p>
+
+*The lobby with every seat dressed. Headwear: crown with a gold glint, tube halo, fire ring, dripping halo, mint halo, shadow wings, glowing horns, neon ears. Frames: glow, radiance, sparks.*
+
+<p align="center"><img src="media/headwear-closeups.gif" alt="Close-ups cycling through six animated headwear pieces" width="420"></p>
+
+*Close-ups, 1.5 s each: amethyst halo (spikes orbit the ring), fire ring (a brief jolt), crown glint, dripping halo, shadow wings, glowing horns. Rendered at 3x pixel density. The amethyst halo and the horns are shown at double speed, the other four in real time.*
+
+| | |
+| --- | --- |
+| ![Six seat frames side by side: none, glow, radiance, sparks, starburst, noir star](media/seat-frames.webp) | ![Twelve seats, each with one headwear piece or none](media/headwear-lineup.webp) |
+| *Seat frames, same player and team colour: none, glow, radiance, sparks, starburst, noir star* | *Headwear lineup: none, neon ears, glowing horns, tube halo, dripping halo, fire ring, mint halo, amethyst halo, crown, shadow wings, thorn tiara, Monkey King circlet* |
+
+**An experiment, not in the game:** the same kind of effects rewritten as WebGPU fragment shaders (holo frame, noir star, spiked halo, starburst), captured from a local lab page in Edge on the machine's own Intel GPU. We use it to explore how far a shader layer could go on top of the CSS/SVG that ships today.
+
+<p align="center"><img src="media/shader-holo.gif" alt="Four WebGPU shader experiments: a holo frame, a noir star, a spiked halo and a starburst around the same portrait" width="760"></p>
+
+*Shader lab (experiment): holo frame, noir star, spiked halo, starburst. In-game, every one of these is CSS/SVG.*
+
+The GIF loops are re-timed slightly so they repeat without a jump: a few CSS animations run up to about 1.3x faster or slower than in the game, the slow 60-second turn of the radiance rays becomes a gentle sway, and the shader loop is a cross-fade. The still sheets hold each animation at a flattering moment, not an average one.
+
 ## Tech stack
 
 | Layer | Choice |
@@ -121,6 +146,7 @@ We are model-agnostic below the Lead. The history also shows Codex used for serv
 | [`examples/`](examples) | Five short code excerpts with explanatory headers | MIT |
 | [`docs/ai-workflow.md`](docs/ai-workflow.md) | How we work with AI | All rights reserved |
 | [`screenshots/`](screenshots) | Four game screenshots and the app icon (WebP) | All rights reserved |
+| [`media/`](media) | Cosmetics captures: three looping GIFs and two WebP sheets | All rights reserved |
 
 ## What is deliberately not here
 
