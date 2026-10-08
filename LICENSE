@@ -1,0 +1,47 @@
+This repository has two parts with two different licences.
+
+================================================================================
+1. Code in /examples  -  MIT License
+================================================================================
+
+Copyright (c) 2026 MASQWORD
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of the example code in the /examples directory (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+2. Everything else  -  All rights reserved
+================================================================================
+
+Copyright (c) 2026 MASQWORD. All rights reserved.
+
+This applies to everything outside /examples, in particular:
+
+  - /screenshots (game screenshots and the app icon),
+  - the MASQWORD name, logo, mask artwork, characters, cosmetics and wordmark,
+  - the game design, rules text and written content of this repository.
+
+No licence to use, copy, modify, redistribute or create derivative works of
+this material is granted, except that the screenshots and icon may be shown
+unmodified for editorial purposes (press, reviews, programme evaluation) with
+credit to "MASQWORD, masqword.com".
+
+The MASQWORD game itself, its server and its content are not part of this
+repository and are not licensed by it.
+
+Contact: contact@masqword.com
