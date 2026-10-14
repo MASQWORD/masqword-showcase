@@ -21,6 +21,13 @@ MASQWORD is an independent game studio: **a Ukrainian team based in Austria**, f
 | **Bunker** (working title) | In development. A social debate game: players argue over who earns a place in the bunker. For Discord, mobile and the web. |
 | *Untitled word game* | Coming soon. A word party game designed for Discord voice chat; our biggest game yet. |
 
+The studio site, [masqword.com](https://masqword.com), was redesigned in October 2026. It opens with the game itself: a hero built from the mask and the words on the table, then a playable sample round where you read a short story and pick the three hidden words before Discord ever loads.
+
+| | |
+| --- | --- |
+| ![masqword.com: the hero](screenshots/site-home.webp) | ![masqword.com: try a round in the browser](screenshots/site-try.webp) |
+| *Home: the mask, the words, one call to play* | *Try a round: catch three words in a story, then reveal* |
+
 ## The game
 
 One player gets a situation and **three secret words** and tells a story out loud, working the words in naturally. Everyone else listens (voice stays in Discord or with the people in the room), throws the words they suspect onto a shared table, then votes. The reveal shows who caught which word and who smuggled one past everybody. 2–8 players, solo or in teams, in **English, Spanish and Russian**.
@@ -32,7 +39,7 @@ One player gets a situation and **three secret words** and tells a story out lou
 | ![Listeners throw suspicious words onto the shared table](screenshots/narrate-listener.webp) | ![The reveal: who caught which word](screenshots/results-listener.webp) |
 | *Listener: sees the table, never the secret words* | *Reveal: storytellers judge typos and short forms, then the table is revealed* |
 
-Screenshots come from a dev fixture with fictional players (see [`examples/screenshot-pipeline.py`](examples/screenshot-pipeline.py)).
+Screenshots come from a dev fixture with fictional players (see [`examples/screenshot-pipeline.py`](examples/screenshot-pipeline.py)), retaken from the current build on 2026-10-13.
 
 ## Cosmetics in motion
 
@@ -69,7 +76,7 @@ The GIF loops are re-timed slightly so they repeat without a jump: a few CSS ani
 | Rules | A **pure reducer** `apply(state, action, ctx)` shared by the browser mock and the server, plus a **per-viewer projection** `projectFor(state, viewerId)` so secrets never reach the wrong socket. |
 | Persistence | Durable Object storage (room state and action-id dedupe), **Workers KV** (editable content catalogue), **Workers Analytics Engine** (anonymous gameplay statistics: no typed words, no names, no room codes). |
 | Languages | Three UI languages (device or Discord locale) and a separate room language; scene and word packs per language, with a seeded chi-square test on the word draw. |
-| Checks | **Vitest**: 756 tests in 71 files, all passing on 2026-10-08. An integration harness boots the Worker locally and drives independent authenticated clients through team, improv and shared-table flows. **Playwright** captures screenshots at fixed viewports. |
+| Checks | **Vitest**: 1,059 tests in 88 files, all passing on 2026-10-13. An integration harness boots the Worker locally and drives independent authenticated clients through team, improv and shared-table flows. **Playwright** captures screenshots at fixed viewports. |
 | Tooling | Node 22, Wrangler 4, Python (Pillow, Playwright) for brand art and the studio site. |
 
 The private repository is organised as `src/state` (rules, content), `src/ui` (screens), `src/net` (sockets, reliability), `src/lib` (i18n, Discord, effects governor) and `worker/src` (room server, protocol allowlist, lifecycle, site routing, telemetry).
@@ -124,18 +131,20 @@ Decisions worth knowing about:
 
 ## Built with AI
 
-Claude Code is our main engineering tool. Of the 112 commits in the private repository (first commit 2026-07-20, counted on 2026-10-08), **99 carry a Claude `Co-Authored-By` trailer**, from sessions on Claude Sonnet 5.5, Opus 5.5 and Fable 5.1. A Claude Code session acts as Lead: it owns intent, architecture, integration and acceptance, and works from a rules file and a short handoff note instead of chat history. Sub-agents take bounded packets (exact files, behaviour, checks) and read-only review passes. Humans decide the product, the look and anything involving publishing or money. The working agreement is in [`docs/ai-workflow.md`](docs/ai-workflow.md).
+Claude Code is our main engineering tool. Of the 247 commits in the private repository (first commit 2026-07-20, counted on 2026-10-13), **167 carry a Claude `Co-Authored-By` trailer**, from sessions on Claude Sonnet 5.5, Opus 5.5 and Fable 5.1. A Claude Code session acts as Lead: it owns intent, architecture, integration and acceptance, and works from a rules file and a short handoff note instead of chat history. Sub-agents take bounded packets (exact files, behaviour, checks) and read-only review passes. Humans decide the product, the look and anything involving publishing or money. The working agreement is in [`docs/ai-workflow.md`](docs/ai-workflow.md).
 
 Concrete examples from the history (commit ids refer to the private repository):
 
 - **Localisation into English and Spanish.** A Claude session wrote the full EN and ES UI dictionaries and the live language switching (`b444d5a`, `477e778`). A *different* coding agent worked read-only alongside it in two phases: first a glossary and a risk list (words with vulgar or double meanings in Spain or Latin America, false friends, literal calques), then a line-by-line review of both dictionaries against real released localisations of party games, one table row per problem with a proposed text and a source. The agreed terminology went into the dictionaries, for example one turn is one story and a round is a full circle, *lanzar* and never *tirar*. The result was checked on screenshots of the game's phases in both languages at three viewport sizes, plus a programmatic overflow report.
 - **Security reviews that changed the code.** Multiplayer changes pass a cross-model review before they ship: Claude sub-agents and Codex review the diff independently of the session that wrote it, and the Lead validates every finding. Fixes that came out of review passes: in the "open table" mode (listeners read thrown words live, the storyteller stays blind) duplicate-word echoes were hidden from storytellers, undo was capped per story, echoes were capped and throws were blocked while paused (`4cc83ed`); a host action that changes the storyteller was restricted to the lobby and preparation (`b2cef8f`); a kicked listener stopped blocking the vote and invisible or bidirectional characters were stripped from nicknames (`f5e7f85`). The backend spec lists the regression tests a change of this kind must carry: forged actors, words and indices, stale versions, concurrent final contributions, durable replay after a lost ack, disconnect and host fallback.
+- **An external audit, fixed by a team of models.** In October 2026 a deep audit of the game listed findings across content, effects, avatars and analytics. The Lead (Claude Opus 5.5) split them into packets: Codex (GPT-6-Astra) rebuilt the gameplay telemetry so outcomes are counted once and the owner dashboard reports which sections are partial (`beadabf`), Devin SWE-2 fixed the effects governor's timers and the avatar edge cache (`c8136c2`, `03a49d9`), and the Lead fixed the content rules itself: pack words must be one token everywhere, client, server and catalogue, and a word swap never deals a word already in the hand (`097d13b`). Claude Haiku 5.5 ran read-only sweeps over client and server; the Lead reproduced every finding before acting. Some were real and fixed (`c7c2fca`: an echoed throw now settles the input, no dead Ready button after the preparation deadline, the next solo storyteller can start their own turn), some were rejected as working by design. Everything shipped only after the unit suite and the real-multiplayer integration run passed on a clean checkout.
+- **Content review with Cloudflare Clef.** The scene and word library (about 2,650 items in three languages) is reviewed in a local-only Content Lab. Cloudflare's Clef model answers typed questions about each item (is it a single concrete noun, is it the right difficulty tier, can a storyteller weave it into a story, does it duplicate another word in the pack) and returns calibrated probabilities. Written critique and rewrite proposals come from ordinary chat sessions with Codex and Claude through a hash-bound export and import, shown next to Clef's numbers. Neither is authoritative: a human keeps, reworks or rejects every item. Gemini 4 Argon built this round of the tool (`ac217df`, `d51a396`); the Lead checked it against live Clef calls and corrected the cost estimate with measured token counts (`fa90a44`).
 - **Brand and store art rendered by scripts.** The icon, cover and background art, Rich Presence badges and social images are produced by Python scripts (SVG drawn as code, lit with SVG filters, rendered by Chromium through Playwright), and the store screenshots by a script that drives the real client (`48cdeec`). A colour or size change is one command, not a redraw. Art direction stays with a human art director; Claude Code writes and iterates the scripts.
-- **The studio site is generated.** One script turns a config into static HTML with JSON-LD, `robots.txt` (Claude's crawlers explicitly allowed), `sitemap.xml` and `llms.txt`, and the Worker routing that serves it is unit-tested (`97f6e34`). Values the owner has not confirmed stay empty and are left out, never invented. See [`examples/studio-site-generator.py`](examples/studio-site-generator.py).
+- **The studio site is generated.** One script turns a config into static HTML with JSON-LD, `robots.txt` (Claude's crawlers explicitly allowed), `sitemap.xml` and `llms.txt`, and the Worker routing that serves it is unit-tested (`97f6e34`). Values the owner has not confirmed stay empty and are left out, never invented. Screenshot URLs carry a content hash, so a retaken screenshot is never hidden behind a stale cache (`e02eadb`). See [`examples/studio-site-generator.py`](examples/studio-site-generator.py).
 - **Screenshot-based design checks.** Layouts are captured with Playwright at fixed sizes (including short landscape phone frames, because Activities run in small windows), read back, measured and fixed. One UI pass records a 25-viewport sweep reporting 0/200 issues (`d9fdb3e`). An image-comparison model can give an advisory second opinion; it never replaces looking at the pixels or human acceptance.
 - **Evidence in commit messages.** Commits carry the checks that were run, for example "unit 567/567, build ok, 25-viewport sweep 0/200 issues". The local mock, a local real-Worker run, a real Discord client, a physical phone and a human playtest are tracked separately, and a pass on one is never reported as a pass on another.
 
-We are model-agnostic below the Lead. The history also shows Codex used for server-side waves, Devin SWE-2 for UI packets and Gemini Flash for small tests and copy, each reviewed by the Lead before merging. We measure what each tool is good at and reassign work accordingly.
+We are model-agnostic below the Lead. The history also shows Codex (GPT-6-Astra) used for server-side waves, Devin SWE-2 for bounded UI and Worker packets, Gemini for tooling, small tests and copy, and Claude Haiku 5.5 for fast read-only sweeps, each reviewed by the Lead before merging. We measure what each tool is good at and reassign work accordingly.
 
 **Planned, not built yet: Claude inside the product.** A game master that writes fresh scenes for each table in the room's language; fair judging of near-miss guesses (typo, short form, different word); moderation and translation of community content packs before they reach other tables; short post-game recaps. We would use a small fast model for judging and moderation and a larger one for scene writing.
 
@@ -145,7 +154,7 @@ We are model-agnostic below the Lead. The history also shows Codex used for serv
 | --- | --- | --- |
 | [`examples/`](examples) | Five short code excerpts with explanatory headers | MIT |
 | [`docs/ai-workflow.md`](docs/ai-workflow.md) | How we work with AI | All rights reserved |
-| [`screenshots/`](screenshots) | Four game screenshots and the app icon (WebP) | All rights reserved |
+| [`screenshots/`](screenshots) | Four game screenshots, two studio-site captures and the app icon (WebP) | All rights reserved |
 | [`media/`](media) | Cosmetics captures: three looping GIFs and two WebP sheets | All rights reserved |
 
 ## What is deliberately not here

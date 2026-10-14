@@ -8,7 +8,8 @@ A short, honest description of the working agreement behind MASQWORD. It is dist
 | --- | --- | --- |
 | Lead | A Claude Code session, with the founder deciding direction | Intent, architecture, integration, visual and game-feel acceptance, merges |
 | Builder | A coding agent given a written packet | One well-specified slice with exact file ownership |
-| Reviewer | A separate read-only agent session | Findings with severity, reproduction and the file or state involved |
+| Reviewer | A separate read-only agent session, often a small fast model sweeping many files | Findings with severity, reproduction and the file or state involved |
+| Advisor | One second frontier model, consulted on hard architecture and debugging questions | Advice, not authority: the Lead decides |
 | Owner | Humans | Product decisions, look and feel, anything involving money, publishing or deployment |
 
 The Lead validates every finding and reviews every diff before it is merged. Builders and reviewers never decide what ships.
@@ -43,4 +44,4 @@ Layout is checked on pixels, not on assumptions: Playwright captures a dev-only 
 
 ## What stays human
 
-Whether a game is fun, whether a cosmetic looks good, what we charge, what we publish and when we deploy. Deployment, publishing and purchases need explicit authorisation from the owner every time; an earlier approval never carries over.
+Whether a game is fun, whether a cosmetic looks good, what we charge, what we publish and when we deploy. A task the owner gives authorises the steps inside it, including deploying work once the full checks pass; anything outside the task that involves new money, secrets or deleting data goes back to the owner. History never authorises an action: an earlier deployment or approval is never repeated on its own.
